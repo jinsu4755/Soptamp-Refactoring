@@ -1,0 +1,63 @@
+plugins {
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.dagger.hilt
+    alias libs.plugins.google.services
+    alias libs.plugins.crashlytics
+}
+
+android {
+    namespace 'org.sopt.android.stamp'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "org.sopt.android.stamp"
+        minSdk 28
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation project(":presentation")
+
+    implementation libs.core.ktx
+    implementation libs.startup
+
+    implementation libs.timber
+
+    implementation libs.hilt.android
+    kapt libs.hilt.kapt
+
+    implementation platform(libs.firebase)
+    implementation libs.firebase.crashlytics
+
+    debugImplementation libs.bundles.flipper
+    releaseImplementation libs.flipper.noop
+}

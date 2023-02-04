@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "38933582025",
+    "project_id": "makers-bc7a2",
+    "storage_bucket": "makers-bc7a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38933582025:android:07e8da92f429d4b8dffd18",
+        "android_client_info": {
+          "package_name": "org.sopt.android.stamp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38933582025-rmcda5hs0d9fbo8jbc1bla726v1sqh0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDxBE9F1yYyiS3enunWpoFUCRR4ak6MoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38933582025-rmcda5hs0d9fbo8jbc1bla726v1sqh0k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
