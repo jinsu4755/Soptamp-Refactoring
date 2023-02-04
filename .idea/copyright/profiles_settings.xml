@@ -1,0 +1,9 @@
+<component name="CopyrightManager">
+  <settings>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="relativeBefore" value="false" />
+      <option name="addBlankAfter" value="false" />
+      <option name="block" value="false" />
+    </LanguageOptions>
+  </settings>
+</component>
