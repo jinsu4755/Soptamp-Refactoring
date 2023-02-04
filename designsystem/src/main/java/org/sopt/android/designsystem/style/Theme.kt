@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -20,9 +21,20 @@ internal val LocalTypography = staticCompositionLocalOf {
 }
 
 object SoptampTheme {
-    val colors: SoptampColorScheme @Composable get() = LocalColors.current
+    val colors: SoptampColorScheme
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalColors.current
 
-    val typography: SoptampTypography @Composable get() = LocalTypography.current
+    val typography: SoptampTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTypography.current
+
+    val dimens: SoptampDimensions
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalDimensions.current
 }
 
 @Composable
@@ -30,6 +42,7 @@ fun SoptampTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     colors: SoptampColorScheme = SoptampTheme.colors,
     typography: SoptampTypography = SoptampTheme.typography,
+    dimens: SoptampDimensions = SoptampTheme.dimens,
     content: @Composable () -> Unit
 ) {
     val rememberColorScheme = remember {
@@ -50,7 +63,8 @@ fun SoptampTheme(
     }
     CompositionLocalProvider(
         LocalColors provides rememberColorScheme,
-        LocalTypography provides typography
+        LocalTypography provides typography,
+        LocalDimensions provides dimens
     ) {
         content()
     }
