@@ -1,7 +1,7 @@
 package org.sopt.android.designsystem.style
 
-import android.app.Activity
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 internal val LocalColors = staticCompositionLocalOf {
     lightColorScheme()
@@ -37,34 +37,38 @@ object SoptampTheme {
         get() = LocalDimensions.current
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SoptampTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     colors: SoptampColorScheme = SoptampTheme.colors,
     typography: SoptampTypography = SoptampTheme.typography,
     dimens: SoptampDimensions = SoptampTheme.dimens,
     content: @Composable () -> Unit
 ) {
-    val rememberColorScheme = remember {
+    val colorScheme = remember {
         colors.copy()
     }.apply { updateColorsFrom(colors) }
 
+    val systemUiController = rememberSystemUiController()
+    val systemUiColor = if (darkTheme) {
+        colorScheme.black
+    } else {
+        colorScheme.white
+    }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = if (darkTheme) {
-                rememberColorScheme.black.toArgb()
-            } else {
-                rememberColorScheme.white.toArgb()
-            }
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            systemUiController.setStatusBarColor(systemUiColor, !darkTheme)
+            systemUiController.setSystemBarsColor(systemUiColor, !darkTheme)
+            view.setBackgroundColor(systemUiColor.toArgb())
         }
     }
     CompositionLocalProvider(
-        LocalColors provides rememberColorScheme,
+        LocalColors provides colorScheme,
         LocalTypography provides typography,
-        LocalDimensions provides dimens
+        LocalDimensions provides dimens,
+        LocalOverscrollConfiguration provides null
     ) {
         content()
     }

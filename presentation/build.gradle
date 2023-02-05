@@ -3,7 +3,6 @@ plugins {
     alias libs.plugins.kotlin.android
     alias libs.plugins.kotlin.kapt
     alias libs.plugins.dagger.hilt
-    alias libs.plugins.google.services
     alias libs.plugins.ksp
 }
 
@@ -26,6 +25,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    libraryVariants.all { variant ->
+        sourceSets {
+            getByName(variant.name) {
+                java.srcDir("build/generated/ksp/${variant.name}/kotlin")
+            }
         }
     }
     compileOptions {
@@ -53,7 +59,9 @@ dependencies {
     implementation project(":designsystem")
     implementation libs.core.ktx
     implementation libs.appcompat
+    implementation libs.splash
 
+    implementation libs.timber
 
     implementation libs.bundles.compose
     implementation libs.compose.destination.core

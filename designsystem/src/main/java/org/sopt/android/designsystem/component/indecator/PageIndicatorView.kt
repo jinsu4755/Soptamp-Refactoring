@@ -13,6 +13,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun PageIndicatorView(
@@ -38,7 +39,7 @@ fun PageIndicatorView(
         targetValue = if (isSelected) {
             selectedLength
         } else {
-            defaultRadius
+            7.dp
         },
         animationSpec = tween(
             durationMillis = animationDurationInMillis
@@ -57,7 +58,7 @@ fun PageIndicatorView(
             topLeft = Offset.Zero,
             size = Size(
                 width = width.toPx(),
-                height = defaultRadius.toPx()
+                height = 7.dp.toPx()
             ),
             cornerRadius = CornerRadius(
                 x = defaultRadius.toPx(),
