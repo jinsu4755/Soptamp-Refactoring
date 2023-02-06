@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,9 +19,11 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import org.sopt.android.designsystem.component.button.SoptampButton
 import org.sopt.android.designsystem.component.indecator.PageIndicator
 import org.sopt.android.designsystem.style.SoptampTheme
 import org.sopt.android.presentation.config.OnboardingNavGraph
+import org.sopt.android.presentation.destinations.LoginScreenDestination
 import org.sopt.android.presentation.onboarding.component.OnboardingPage
 import org.sopt.android.presentation.onboarding.model.OnBoardingPageUiModel
 
@@ -36,7 +35,7 @@ fun OnboardingScreen(
 ) {
     SoptampTheme {
         OnboardingScreen(
-            onClickStart = { navigator }
+            onClickStart = { navigator.navigate(LoginScreenDestination) }
         )
     }
 }
@@ -95,28 +94,22 @@ fun OnboardingButton(
                 horizontal = SoptampTheme.dimens.defaultHorizontalPadding
             )
     ) {
-        Button(
+        SoptampButton(
+            text = "시작하기",
+            textStyle = SoptampTheme.typography.h2,
+            textColor = SoptampTheme.colors.white,
             onClick = { onClick() },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(9.dp),
-            contentPadding = PaddingValues(vertical = 17.dp),
-            enabled = isButtonEnabled,
-            colors = ButtonDefaults.buttonColors(
+            isEnable = isButtonEnabled,
+            buttonColors = ButtonDefaults.buttonColors(
                 backgroundColor = SoptampTheme.colors.purple300,
                 disabledBackgroundColor = SoptampTheme.colors.purple200
             ),
-            elevation = ButtonDefaults.elevation(0.dp, 0.dp)
-        ) {
-            Text(
-                text = "시작하기",
-                style = SoptampTheme.typography.h2,
-                color = SoptampTheme.colors.white
-            )
-        }
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
-@Preview(backgroundColor = 0xFFFFFF)
+@Preview(backgroundColor = 0xFFFFFF, showBackground = true)
 @Composable
 fun PreviewOnboardingScreen() {
     SoptampTheme {
