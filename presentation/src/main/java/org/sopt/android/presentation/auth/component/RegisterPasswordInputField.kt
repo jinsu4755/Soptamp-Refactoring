@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -28,8 +29,11 @@ fun RegisterPasswordInputField(
     visualTransformation: PasswordVisualTransformation = PasswordVisualTransformation(),
     passwordLabelText: String = "",
     passwordConfirmLabelText: String = "",
-    isError: Boolean = false,
-    message: String = ""
+    isErrorPassword: Boolean = false,
+    isErrorPasswordConfirm: Boolean = false,
+    message: String = "",
+    onFocusPassword: (FocusState) -> Unit = {},
+    onFocusPasswordConfirm: (FocusState) -> Unit = {}
 ) {
     val passwordInput = remember {
         mutableStateOf(TextFieldValue())
@@ -55,7 +59,8 @@ fun RegisterPasswordInputField(
             keyboardOptions = keyboardOptions,
             visualTransformation = visualTransformation,
             labelText = passwordLabelText,
-            isError = isError
+            isError = isErrorPassword,
+            onFocus = { onFocusPassword(it) }
         )
         Spacer(modifier = Modifier.size(12.dp))
         SoptampTextField(
@@ -65,13 +70,18 @@ fun RegisterPasswordInputField(
             keyboardOptions = keyboardOptions,
             visualTransformation = visualTransformation,
             labelText = passwordConfirmLabelText,
-            isError = isError
+            isError = isErrorPasswordConfirm,
+            onFocus = { onFocusPasswordConfirm(it) }
         )
         Spacer(modifier = Modifier.size(12.dp))
         Text(
             text = message,
             style = SoptampTheme.typography.caption3,
-            color = if (isError) SoptampTheme.colors.error300 else SoptampTheme.colors.access300
+            color = if (isErrorPassword or isErrorPasswordConfirm) {
+                SoptampTheme.colors.error300
+            } else {
+                SoptampTheme.colors.access300
+            }
         )
     }
 }

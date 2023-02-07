@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -33,6 +35,7 @@ import org.sopt.android.designsystem.component.textfield.SoptampTextField
 import org.sopt.android.designsystem.style.SoptampTheme
 import org.sopt.android.presentation.auth.model.LoginUiModel
 import org.sopt.android.presentation.config.AuthNavGraph
+import org.sopt.android.presentation.destinations.FindAccountScreenDestination
 import org.sopt.android.presentation.destinations.RegisterScreenDestination
 
 @AuthNavGraph(true)
@@ -42,8 +45,13 @@ fun LoginScreen(
     navigator: DestinationsNavigator
 ) {
     SoptampTheme {
+        val density = LocalDensity.current
         LoginScreen(
-            onClickRegister = { navigator.navigate(RegisterScreenDestination) }
+            onClickLogin = {},
+            onClickFindAccount = { navigator.navigate(FindAccountScreenDestination) },
+            onClickRegister = { navigator.navigate(RegisterScreenDestination) },
+            onEmailChange = {},
+            onPasswordChange = {}
         )
     }
 }
@@ -158,7 +166,7 @@ fun LoginPageLoginButton(
         text = "로그인",
         textStyle = SoptampTheme.typography.h2,
         textColor = SoptampTheme.colors.white,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().imePadding(),
         onClick = { onClick() }
     )
 }

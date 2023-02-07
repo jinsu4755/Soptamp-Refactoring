@@ -1,4 +1,4 @@
-package org.sopt.android.stamp.initalizer
+package org.sopt.android.stamp.initializer
 
 import android.content.Context
 import android.util.Log
@@ -18,7 +18,7 @@ class TimberInitializer : Initializer<Unit> {
     }
 
     private class DebugTree : Timber.DebugTree() {
-        override fun createStackElementTag(element: StackTraceElement): String? {
+        override fun createStackElementTag(element: StackTraceElement): String {
             return "SOPTAMP:${element.fileName}:${element.methodName} - ${element.lineNumber}"
         }
     }

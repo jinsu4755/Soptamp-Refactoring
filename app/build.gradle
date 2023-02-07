@@ -7,6 +7,9 @@ plugins {
     alias libs.plugins.crashlytics
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'org.sopt.android.stamp'
     compileSdk 33
@@ -22,6 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField "String", "SOPTAMP_API_KEY", properties["apiKey"]
     }
 
     buildTypes {
@@ -61,4 +66,7 @@ dependencies {
 
     debugImplementation libs.bundles.flipper
     releaseImplementation libs.flipper.noop
+    debugImplementation(libs.flipper.network.get()) {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
 }

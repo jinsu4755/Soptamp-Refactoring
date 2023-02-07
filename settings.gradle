@@ -16,3 +16,7 @@ rootProject.name = "Sopt-Stamp"
 include ':app'
 include ':presentation'
 include ':designsystem'
+include ':domain'
+include ':data'
+include ':remote'
+include ':local'
