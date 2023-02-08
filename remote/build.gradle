@@ -23,6 +23,7 @@ dependencies {
 
     implementation libs.retrofit
     implementation libs.retrofit.kotlin.serialization.converter
+    implementation libs.kotlin.serialization.json
     implementation platform(libs.okhttp.bom)
     implementation libs.bundles.okhttp
 

@@ -32,9 +32,13 @@ class App : Application() {
         if (BuildConfig.DEBUG && FlipperUtils.shouldEnableFlipper(this)) {
             AndroidFlipperClient.getInstance(this).apply {
                 addPlugin(InspectorFlipperPlugin(this@App, DescriptorMapping.withDefaults()))
-                addPlugin(NetworkFlipperPlugin())
+                addPlugin(networkFlipperPlugin)
                 addPlugin(LeakCanary2FlipperPlugin())
             }.start()
         }
+    }
+
+    companion object {
+        val networkFlipperPlugin = NetworkFlipperPlugin()
     }
 }

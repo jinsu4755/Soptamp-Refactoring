@@ -18,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -45,7 +44,6 @@ fun LoginScreen(
     navigator: DestinationsNavigator
 ) {
     SoptampTheme {
-        val density = LocalDensity.current
         LoginScreen(
             onClickLogin = {},
             onClickFindAccount = { navigator.navigate(FindAccountScreenDestination) },
