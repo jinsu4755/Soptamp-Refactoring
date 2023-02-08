@@ -2,7 +2,7 @@ package org.sopt.android.local
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -15,10 +15,10 @@ private val Context.dataStore by preferencesDataStore(name = "pref")
 class SoptampDataStore @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    val userId: Flow<Int> = context.dataStore.data.map { preferences -> preferences[USER_ID] ?: -1 }
+    val userId: Flow<Long> = context.dataStore.data.map { preferences -> preferences[USER_ID] ?: -1 }
     val profileMessage: Flow<String> = context.dataStore.data.map { preferences -> preferences[PROFILE_MESSAGE] ?: "" }
 
-    suspend fun setUserId(userId: Int) {
+    suspend fun setUserId(userId: Long) {
         context.dataStore.edit { pref ->
             pref[USER_ID] = userId
         }
@@ -31,7 +31,7 @@ class SoptampDataStore @Inject constructor(
     }
 
     companion object {
-        private val USER_ID = intPreferencesKey("user")
+        private val USER_ID = longPreferencesKey("user")
         private val PROFILE_MESSAGE = stringPreferencesKey("profile_message")
     }
 }

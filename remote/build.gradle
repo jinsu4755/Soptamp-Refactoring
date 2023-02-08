@@ -15,6 +15,7 @@ test {
 }
 
 dependencies {
+    implementation project(":data")
     implementation libs.coroutine.core
     implementation libs.javax.inject
     implementation libs.hilt.core
