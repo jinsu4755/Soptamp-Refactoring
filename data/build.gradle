@@ -14,6 +14,7 @@ test {
 }
 
 dependencies {
+    implementation project(":domain")
     implementation libs.coroutine.core
     implementation libs.javax.inject
     implementation libs.hilt.core
