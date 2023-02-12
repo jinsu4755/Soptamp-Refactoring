@@ -1,6 +1,6 @@
 package org.sopt.android.remote.utils
 
-import org.sopt.android.data.ErrorData
+import org.sopt.android.data.error.ErrorData
 import org.sopt.android.remote.mapper.toErrorDataResult
 import retrofit2.HttpException
 import java.net.UnknownHostException
