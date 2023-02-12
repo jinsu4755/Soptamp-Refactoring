@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import org.sopt.android.designsystem.style.SoptampTheme
 @Composable
 fun RegisterInputField(
     title: String,
+    input: MutableState<TextFieldValue>,
     onTextChange: (String) -> Unit = {},
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -36,9 +38,6 @@ fun RegisterInputField(
     buttonText: String = "확인",
     onClickButton: () -> Unit = {}
 ) {
-    val input = remember {
-        mutableStateOf(TextFieldValue())
-    }
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight()
     ) {
@@ -88,9 +87,13 @@ fun RegisterInputField(
 @Preview(backgroundColor = 0xFFFFFF, showBackground = true)
 @Composable
 fun PreviewRegisterInputField() {
+    val input = remember {
+        mutableStateOf(TextFieldValue())
+    }
     SoptampTheme {
         RegisterInputField(
             title = "닉네임",
+            input = input,
             labelText = "input content",
             message = "message"
         )
