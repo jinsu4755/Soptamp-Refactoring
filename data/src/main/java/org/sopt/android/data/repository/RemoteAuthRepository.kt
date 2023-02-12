@@ -1,6 +1,6 @@
 package org.sopt.android.data.repository
 
-import org.sopt.android.data.ErrorData
+import org.sopt.android.data.error.ErrorData
 import org.sopt.android.data.mapper.toDomain
 import org.sopt.android.data.source.AuthDataSource
 import org.sopt.android.domain.model.Login
