@@ -29,7 +29,8 @@ data class RegisterUiModel(
         return copy(
             nickname = nickname.value,
             nicknameCheckState = if (value.isEmpty() or nickname.isValid) CheckState.NONE else CheckState.NONE_PASS,
-            nicknameCheckMessage = nickname.errorMessage
+            nicknameCheckMessage = nickname.errorMessage,
+            isAllInputNotEmpty = isAllInputIsNotEmpty()
         )
     }
 
@@ -38,7 +39,8 @@ data class RegisterUiModel(
         return copy(
             email = email.value,
             emailCheckState = if (value.isEmpty() or email.isValid) CheckState.NONE else CheckState.NONE_PASS,
-            emailCheckMessage = email.errorMessage
+            emailCheckMessage = email.errorMessage,
+            isAllInputNotEmpty = isAllInputIsNotEmpty()
         )
     }
 
@@ -47,7 +49,8 @@ data class RegisterUiModel(
         return copy(
             password = password.value,
             passwordCheckState = if (value.isEmpty() or password.isValid) CheckState.NONE else CheckState.NONE_PASS,
-            passwordCheckMessage = password.errorMessage
+            passwordCheckMessage = password.errorMessage,
+            isAllInputNotEmpty = isAllInputIsNotEmpty()
         )
     }
 
@@ -64,9 +67,13 @@ data class RegisterUiModel(
                 ""
             } else {
                 NOT_EQUAL_PASSWORD_MESSAGE
-            }
+            },
+            isAllInputNotEmpty = isAllInputIsNotEmpty()
         )
     }
+
+    private fun isAllInputIsNotEmpty() =
+        (nickname.isNotEmpty() and email.isNotEmpty() and password.isNotEmpty() and passwordConfirm.isNotEmpty())
 
     companion object {
         val empty = RegisterUiModel()

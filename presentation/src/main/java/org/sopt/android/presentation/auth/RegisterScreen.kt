@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,15 +28,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.result.ResultBackNavigator
+import org.sopt.android.designsystem.component.LoadingScreen
 import org.sopt.android.designsystem.component.button.SoptampButton
 import org.sopt.android.designsystem.component.button.SoptampIconButton
+import org.sopt.android.designsystem.component.dialog.NetworkErrorDialog
 import org.sopt.android.designsystem.component.topappbar.SoptTopAppBar
 import org.sopt.android.designsystem.component.utils.rememberKeyBoardState
 import org.sopt.android.designsystem.style.SoptampTheme
@@ -45,6 +48,8 @@ import org.sopt.android.presentation.auth.component.RegisterInputField
 import org.sopt.android.presentation.auth.component.RegisterPasswordInputField
 import org.sopt.android.presentation.auth.model.RegisterUiModel
 import org.sopt.android.presentation.config.AuthNavGraph
+import org.sopt.android.presentation.destinations.LoginScreenDestination
+import org.sopt.android.presentation.destinations.RegisterCompleteScreenDestination
 import org.sopt.android.designsystem.R as DesignR
 
 @AuthNavGraph()
@@ -66,8 +71,13 @@ fun RegisterScreen(
                     uiModel = (state as RegisterState.Default).uiModel
                 }
 
-                RegisterState.Loading -> {}
-                RegisterState.Failure -> {}
+                RegisterState.Loading -> {
+                    LoadingScreen()
+                }
+
+                RegisterState.Failure -> {
+                    NetworkErrorDialog()
+                }
             }
             RegisterScreen(
                 uiModel = uiModel,
@@ -77,7 +87,16 @@ fun RegisterScreen(
                 onPasswordConfirmChange = { viewModel.putPasswordConfirm(it) },
                 onClickCheckNickname = {},
                 onClickCheckEmail = {},
-                onClickRegister = {},
+                onClickRegister = {
+                    navigator.navigate(
+                        direction = RegisterCompleteScreenDestination,
+                        builder = {
+                            popUpTo(LoginScreenDestination) {
+                                inclusive = true
+                            }
+                        }
+                    )
+                },
                 onClickBackNav = { resultNavigator.navigateBack() }
             )
         }
@@ -112,18 +131,23 @@ fun RegisterScreen(
             val isShowKeyboard by rememberKeyBoardState()
             var isFocusPassword by remember { mutableStateOf(false) }
             var isFocusPasswordConfirm by remember { mutableStateOf(false) }
+            val inputNickname = remember {
+                mutableStateOf(TextFieldValue(uiModel.nickname))
+            }
+            val inputEmail = remember {
+                mutableStateOf(TextFieldValue(uiModel.email))
+            }
             val density = LocalDensity.current
             Spacer(modifier = Modifier.weight(1f))
             AnimatedVisibility(
                 visible = !((isFocusPassword or isFocusPasswordConfirm) and isShowKeyboard),
-                enter = slideInVertically {
-                    with(density) { -328.dp.roundToPx() }
-                },
+                enter = slideInVertically(),
                 exit = slideOutVertically()
             ) {
                 Column() {
                     RegisterInputField(
                         title = "닉네임",
+                        input = inputNickname,
                         onTextChange = { onNicknameChange(it) },
                         labelText = "한글/영문 NN자로 입력해주세요.",
                         isError = !(uiModel.nicknameCheckState.isPass),
@@ -133,6 +157,7 @@ fun RegisterScreen(
                     Spacer(modifier = Modifier.size(38.dp))
                     RegisterInputField(
                         title = "이메일",
+                        input = inputEmail,
                         onTextChange = { onEmailChange(it) },
                         labelText = "이메일을 입력해주세요.",
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -164,9 +189,7 @@ fun RegisterScreen(
                     backgroundColor = SoptampTheme.colors.purple300,
                     disabledBackgroundColor = SoptampTheme.colors.purple200
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .imePadding(),
+                modifier = Modifier.fillMaxWidth(),
                 onClick = { onClickRegister() },
                 isEnable = uiModel.isAllInputNotEmpty
             )
