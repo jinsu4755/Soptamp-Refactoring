@@ -10,4 +10,5 @@ sealed class Error(
     object Forbidden : Error()
     object NotFound : Error()
     object ServerError : Error()
+    data class NotUsefulCredentials(override val message: String?) : Error(message)
 }

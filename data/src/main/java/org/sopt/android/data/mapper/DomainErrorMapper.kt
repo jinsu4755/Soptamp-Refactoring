@@ -1,6 +1,6 @@
 package org.sopt.android.data.mapper
 
-import org.sopt.android.data.ErrorData
+import org.sopt.android.data.error.ErrorData
 import org.sopt.android.domain.error.Error
 
 internal fun ErrorData.toDomain() = when (this) {
@@ -10,4 +10,5 @@ internal fun ErrorData.toDomain() = when (this) {
     ErrorData.Forbidden -> Error.Forbidden
     ErrorData.NotFound -> Error.NotFound
     ErrorData.ServerError -> Error.ServerError
+    is ErrorData.NotUsefulCredentials -> Error.NotUsefulCredentials(this.message)
 }

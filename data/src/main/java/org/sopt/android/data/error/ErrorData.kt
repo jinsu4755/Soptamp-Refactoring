@@ -1,4 +1,4 @@
-package org.sopt.android.data
+package org.sopt.android.data.error
 
 sealed class ErrorData(
     override val message: String? = null,
@@ -10,4 +10,6 @@ sealed class ErrorData(
     object Forbidden : ErrorData()
     object NotFound : ErrorData()
     object ServerError : ErrorData()
+
+    data class NotUsefulCredentials(override val message: String?) : ErrorData(message)
 }
