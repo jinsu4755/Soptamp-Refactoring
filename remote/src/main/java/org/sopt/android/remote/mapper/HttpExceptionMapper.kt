@@ -1,6 +1,6 @@
 package org.sopt.android.remote.mapper
 
-import org.sopt.android.data.ErrorData
+import org.sopt.android.data.error.ErrorData
 import retrofit2.HttpException
 
 fun <T> HttpException.toErrorDataResult(): Result<T> = when (this.code()) {
