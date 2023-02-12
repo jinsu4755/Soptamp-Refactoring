@@ -6,7 +6,6 @@ import org.sopt.android.remote.model.request.PatchPasswordRequest
 import org.sopt.android.remote.model.request.RegisterRequest
 import org.sopt.android.remote.model.response.LoginResponse
 import org.sopt.android.remote.model.response.RegisterResponse
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -19,37 +18,37 @@ interface AuthService {
     @POST("user/signup")
     suspend fun register(
         @Body request: RegisterRequest
-    ): Response<RegisterResponse>
+    ): RegisterResponse
 
     @GET("auth?nickname={nickname}")
     suspend fun checkNickname(
         @Query("nickname") nickname: String
-    ): Response<Unit>
+    ): Unit
 
     @GET("auth?email={email}")
     suspend fun checkEmail(
         @Query("email") email: String
-    ): Response<Unit>
+    ): Unit
 
     @POST("user/login")
     suspend fun login(
         @Body request: LoginRequest
-    ): Response<LoginResponse>
+    ): LoginResponse
 
     @PATCH("auth/password")
     suspend fun patchPassword(
         @Header("userId") userId: Long,
         @Body request: PatchPasswordRequest
-    ): Response<Unit>
+    ): Unit
 
     @PATCH("auth/nickname")
     suspend fun patchNickname(
         @Header("userId") userId: Long,
         @Body request: PatchNicknameRequest
-    ): Response<Unit>
+    ): Unit
 
     @DELETE("auth/withdraw")
     suspend fun withdraw(
         @Header("userId") userId: Long
-    ): Response<Unit>
+    ): Unit
 }
