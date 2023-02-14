@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.sopt.android.data.source.AuthDataSource
+import org.sopt.android.data.source.MissionsDataSource
 import org.sopt.android.remote.source.RemoteAuthDataSource
+import org.sopt.android.remote.source.RemoteMissionsDataSource
 import javax.inject.Singleton
 
 @Module
@@ -16,4 +18,10 @@ internal abstract class DataSourceModule {
     abstract fun bindRemoteAuthDataSource(
         source: RemoteAuthDataSource
     ): AuthDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindRemoteMissionsDataSource(
+        source: RemoteMissionsDataSource
+    ): MissionsDataSource
 }

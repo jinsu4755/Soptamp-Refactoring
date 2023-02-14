@@ -1,3 +1,9 @@
 package org.sopt.android.data.source
 
-interface MissionsDataSource
+import org.sopt.android.data.model.MissionData
+
+interface MissionsDataSource {
+    suspend fun getAllMissions(userId: Long): Result<List<MissionData>>
+    suspend fun getCompleteMissions(userId: Long): Result<List<MissionData>>
+    suspend fun getInCompleteMissions(userId: Long): Result<List<MissionData>>
+}
