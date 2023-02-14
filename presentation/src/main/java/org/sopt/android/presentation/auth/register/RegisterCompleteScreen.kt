@@ -1,4 +1,4 @@
-package org.sopt.android.presentation.auth
+package org.sopt.android.presentation.auth.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

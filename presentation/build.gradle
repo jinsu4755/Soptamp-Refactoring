@@ -71,6 +71,7 @@ dependencies {
     implementation libs.bundles.accompanist
 
     implementation libs.lifecycle.viewmodel
+    implementation libs.coroutine.core
 
     implementation libs.coil.compose
 

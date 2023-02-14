@@ -1,4 +1,4 @@
-package org.sopt.android.presentation.auth
+package org.sopt.android.presentation.auth.register
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

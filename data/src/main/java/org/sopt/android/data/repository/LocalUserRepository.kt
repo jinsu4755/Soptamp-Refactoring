@@ -9,11 +9,11 @@ import javax.inject.Inject
 internal class LocalUserRepository @Inject constructor(
     private val userDataSource: UserDataSource
 ) : UserRepository {
-    suspend fun setUserId(userId: Long) {
+    override suspend fun setUserId(userId: Long) {
         userDataSource.setUserId(userId)
     }
 
-    suspend fun getUserId(): Result<Long> {
+    override suspend fun getUserId(): Result<Long> {
         val userId: Result<Long> = userDataSource.getUserId()
         val exception = userId.exceptionOrNull()
         return if (exception is ErrorData) {

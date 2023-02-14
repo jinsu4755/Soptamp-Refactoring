@@ -1,4 +1,4 @@
-package org.sopt.android.presentation.auth
+package org.sopt.android.presentation.auth.register
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically

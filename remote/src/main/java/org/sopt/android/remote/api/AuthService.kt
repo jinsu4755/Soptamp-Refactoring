@@ -14,7 +14,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface AuthService {
+internal interface AuthService {
     @POST("user/signup")
     suspend fun register(
         @Body request: RegisterRequest

@@ -1,4 +1,4 @@
-package org.sopt.android.presentation.auth
+package org.sopt.android.presentation.auth.register
 
 import org.sopt.android.presentation.auth.model.RegisterUiModel
 

@@ -5,8 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import org.sopt.android.designsystem.component.utils.noRippleClickable
 import org.sopt.android.designsystem.style.SoptampTheme
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ErrorDialog(
     title: String,
@@ -23,45 +29,53 @@ fun ErrorDialog(
     retryButtonText: String = "확인",
     onRetry: () -> Unit = {}
 ) {
-    AlertDialog(
-        onDismissRequest = {},
-        title = {
-            Text(
-                text = title,
-                style = SoptampTheme.typography.sub1,
-                color = Color.Black,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-        },
-        text = {
-            content?.let {
+    var openDialog by remember {
+        mutableStateOf(true)
+    }
+    if (openDialog) {
+        AlertDialog(
+            onDismissRequest = { openDialog = false },
+            title = {
                 Text(
-                    text = it,
-                    style = SoptampTheme.typography.caption3,
-                    color = SoptampTheme.colors.onSurface50,
+                    text = title,
+                    style = SoptampTheme.typography.sub1,
+                    color = Color.Black,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
+            },
+            text = {
+                content?.let {
+                    Text(
+                        text = it,
+                        style = SoptampTheme.typography.caption3,
+                        color = SoptampTheme.colors.onSurface50,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
+            },
+            buttons = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color(0xFFFF8080))
+                        .noRippleClickable {
+                            onRetry()
+                            openDialog = false
+                        }
+                        .padding(vertical = 15.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = retryButtonText,
+                        style = SoptampTheme.typography.sub1,
+                        color = Color.White
+                    )
+                }
             }
-        },
-        buttons = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = Color(0xFFFF8080))
-                    .noRippleClickable { onRetry() }
-                    .padding(vertical = 15.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = retryButtonText,
-                    style = SoptampTheme.typography.sub1,
-                    color = Color.White
-                )
-            }
-        }
-    )
+        )
+    }
 }
 
 @Preview

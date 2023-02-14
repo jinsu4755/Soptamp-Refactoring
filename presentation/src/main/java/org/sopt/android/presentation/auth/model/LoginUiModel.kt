@@ -1,6 +1,6 @@
 package org.sopt.android.presentation.auth.model
 
-class LoginUiModel(
+data class LoginUiModel(
     val email: String = "",
     val password: String = "",
     val errorMessage: String? = null,

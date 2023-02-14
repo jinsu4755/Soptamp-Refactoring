@@ -1,4 +1,4 @@
-package org.sopt.android.presentation.auth
+package org.sopt.android.presentation.auth.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +14,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,11 +28,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.sopt.android.designsystem.R
+import org.sopt.android.designsystem.component.LoadingScreen
 import org.sopt.android.designsystem.component.button.SoptampButton
 import org.sopt.android.designsystem.component.button.UnderLineTextButton
+import org.sopt.android.designsystem.component.dialog.NetworkErrorDialog
 import org.sopt.android.designsystem.component.textfield.SoptampTextField
 import org.sopt.android.designsystem.style.SoptampTheme
 import org.sopt.android.presentation.auth.model.LoginUiModel
@@ -41,16 +47,39 @@ import org.sopt.android.presentation.destinations.RegisterScreenDestination
 @Destination("auth/login")
 @Composable
 fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel(),
     navigator: DestinationsNavigator
 ) {
+    val state by viewModel.state.collectAsState()
     SoptampTheme {
-        LoginScreen(
-            onClickLogin = {},
-            onClickFindAccount = { navigator.navigate(FindAccountScreenDestination) },
-            onClickRegister = { navigator.navigate(RegisterScreenDestination) },
-            onEmailChange = {},
-            onPasswordChange = {}
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            var uiModel by remember {
+                mutableStateOf(LoginState.Default(LoginUiModel.empty).uiModel)
+            }
+            when (state) {
+                is LoginState.Default -> {
+                    uiModel = (state as LoginState.Default).uiModel
+                }
+
+                LoginState.Loading -> {
+                    LoadingScreen()
+                }
+
+                LoginState.Failure -> {
+                    NetworkErrorDialog(
+                        onRetry = { uiModel = LoginState.Default(LoginUiModel.empty).uiModel }
+                    )
+                }
+            }
+            LoginScreen(
+                loginUiModel = uiModel,
+                onClickLogin = { viewModel.login() },
+                onClickFindAccount = { navigator.navigate(FindAccountScreenDestination) },
+                onClickRegister = { navigator.navigate(RegisterScreenDestination) },
+                onEmailChange = { viewModel.putEmail(it) },
+                onPasswordChange = { viewModel.putPassword(it) }
+            )
+        }
     }
 }
 
@@ -67,7 +96,8 @@ fun LoginScreen(
     val emailInput = remember { mutableStateOf(TextFieldValue()) }
     val passwordInput = remember { mutableStateOf(TextFieldValue()) }
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .padding(
                 horizontal = SoptampTheme.dimens.defaultHorizontalPadding
             ),
@@ -98,7 +128,8 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.size(12.dp))
         Box(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 2.dp)
         ) {
             LoginPageErrorText(loginUiModel.errorMessage)
@@ -109,7 +140,8 @@ fun LoginScreen(
         }
         Spacer(modifier = Modifier.size(52.dp))
         LoginPageLoginButton(
-            onClick = { onClickLogin() }
+            onClick = { onClickLogin() },
+            isEnable = emailInput.value.text.isNotEmpty() and passwordInput.value.text.isNotEmpty()
         )
         Spacer(modifier = Modifier.size(20.dp))
         LoginPageRegisterButton(
@@ -158,14 +190,18 @@ fun LoginPageFindAccountButton(
 
 @Composable
 fun LoginPageLoginButton(
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    isEnable: Boolean = false
 ) {
     SoptampButton(
         text = "로그인",
         textStyle = SoptampTheme.typography.h2,
         textColor = SoptampTheme.colors.white,
-        modifier = Modifier.fillMaxWidth().imePadding(),
-        onClick = { onClick() }
+        modifier = Modifier
+            .fillMaxWidth()
+            .imePadding(),
+        onClick = { onClick() },
+        isEnable = isEnable
     )
 }
 
